@@ -79,10 +79,16 @@ msg "Installing toolchain..."
 
 cd "$workdir"/"$kernel_path" || exit 127
 
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+#curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
 #curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.5.2
 #fix compile issue
 #cp sepolicy.c $(pwd)/KernelSU/kernel/selinux/
+wget https://github.com/wu17481748/lxc-docker/releases/download/lxc-docker-2config/LXC-DOCKER-OPEN-CONFIG.sh
+chmod 777 ./LXC-DOCKER-OPEN-CONFIG.sh
+./LXC-DOCKER-OPEN-CONFIG.sh arch/arm64/configs/Abdelhay_defconfig -w
+
+sed -i '/CONFIG_ANDROID_PARANOID_NETWORK/d' arch/arm64/configs/Abdelhay_defconfig
+echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> arch/arm64/configs/Abdelhay_defconfig
 
 start_time="$(date +%s)"
 date="$(date +%d%m%Y-%I%M)"
